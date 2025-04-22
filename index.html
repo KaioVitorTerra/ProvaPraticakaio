@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Controle de Gastos</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 500px; margin: 0 auto; padding: 20px; }
+    input, button { padding: 8px; margin: 5px 0; width: 100%; box-sizing: border-box; }
+    button { background: #4CAF50; color: white; border: none; cursor: pointer; }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    td, th { border: 1px solid #ddd; padding: 8px; text-align: left; }
+    .delete { background: #f44336; padding: 2px 5px; }
+  </style>
+</head>
+<body>
+  <h2>Controle de Gastos</h2>
+  <input type="text" id="descricao" placeholder="Descrição">
+  <input type="number" id="valor" placeholder="Valor (R$)" step="0.01">
+  <button onclick="adicionarGasto()">Adicionar</button>
+  
+  <h3>Total: R$ <span id="total">0.00</span></h3>
+  
+  <table id="tabela">
+    <thead>
+      <tr><th>Descrição</th><th>Valor</th><th>Ação</th></tr>
+    </thead>
+    <tbody id="lista"></tbody>
+  </table>
+
+  
