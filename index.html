@@ -5,7 +5,7 @@
   <style>
     body { font-family: Arial, sans-serif; max-width: 500px; margin: 0 auto; padding: 20px; }
     input, button { padding: 8px; margin: 5px 0; width: 100%; box-sizing: border-box; }
-    button { background: #4CAF50; color: white; border: none; cursor: pointer; }
+    button { background: #228543; color: rgb(211, 211, 211); border: none; cursor: pointer; }
     table { width: 100%; border-collapse: collapse; margin-top: 20px; }
     td, th { border: 1px solid #ddd; padding: 8px; text-align: left; }
     .delete { background: #f44336; padding: 2px 5px; }
@@ -26,4 +26,51 @@
     <tbody id="lista"></tbody>
   </table>
 
-  
+  <script>
+    let gastos = JSON.parse(localStorage.getItem('gastos')) || [];
+    
+    function atualizarLista() {
+      const lista = document.getElementById('lista');
+      lista.innerHTML = '';
+      let total = 0;
+      
+      gastos.forEach((gasto, index) => {
+        total += gasto.valor;
+        lista.innerHTML += `
+          <tr>
+            <td>${gasto.descricao}</td>
+            <td>R$ ${gasto.valor.toFixed(2)}</td>
+            <td><button class="delete" onclick="removerGasto(${index})">X</button></td>
+          </tr>
+        `;
+      });
+      
+      document.getElementById('total').textContent = total.toFixed(2);
+      localStorage.setItem('gastos', JSON.stringify(gastos));
+    }
+    
+    function adicionarGasto() {
+      const descricao = document.getElementById('descricao').value.trim();
+      const valor = parseFloat(document.getElementById('valor').value);
+      
+      if (descricao && !isNaN(valor) && valor > 0) {
+        gastos.push({ descricao, valor });
+        document.getElementById('descricao').value = '';
+        document.getElementById('valor').value = '';
+        atualizarLista();
+      } else {
+        alert('Por favor, preencha todos os campos corretamente!');
+      }
+    }
+    
+    function removerGasto(index) {
+      if (confirm('Tem certeza que deseja remover este gasto?')) {
+        gastos.splice(index, 1);
+        atualizarLista();
+      }
+    }
+    
+    atualizarLista();
+  </script>
+</body>
+</html>
