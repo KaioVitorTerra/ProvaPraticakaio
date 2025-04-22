@@ -3,25 +3,97 @@
 <head>
   <title>Controle de Gastos</title>
   <style>
-    body { font-family: Arial, sans-serif; max-width: 500px; margin: 0 auto; padding: 20px; }
-    input, button { padding: 8px; margin: 5px 0; width: 100%; box-sizing: border-box; }
-    button { background: #228543; color: rgb(211, 211, 211); border: none; cursor: pointer; }
-    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-    td, th { border: 1px solid #ddd; padding: 8px; text-align: left; }
-    .delete { background: #f44336; padding: 2px 5px; }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      max-width: 500px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #f8f9fa;
+    }
+    input, select, button {
+      padding: 10px;
+      margin: 8px 0;
+      width: 100%;
+      box-sizing: border-box;
+      border: 1px solid #dee2e6;
+      border-radius: 5px;
+    }
+    button {
+      background: #20c997;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background 0.2s;
+    }
+    button:hover {
+      background: #1aa179;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      background: white;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    th {
+      background: #495057;
+      color: white;
+      padding: 12px;
+      text-align: left;
+    }
+    td {
+      padding: 12px;
+      border-bottom: 1px solid #e9ecef;
+    }
+    .delete {
+      background: #ff6b6b;
+      padding: 5px 10px;
+      border-radius: 4px;
+    }
+    .delete:hover {
+      background: #fa5252;
+    }
+    #total {
+      color: #339af0;
+      font-weight: bold;
+      font-size: 1.2em;
+    }
+    .categoria {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 12px;
+      font-size: 0.8em;
+      background: #e6fcf5;
+      color: #087f5b;
+    }
   </style>
 </head>
 <body>
-  <h2>Controle de Gastos</h2>
+  <h2 style="color: #343a40;">Controle de Gastos</h2>
   <input type="text" id="descricao" placeholder="Descrição">
   <input type="number" id="valor" placeholder="Valor (R$)" step="0.01">
+  <select id="categoria">
+    <option value="Alimentação">Alimentação</option>
+    <option value="Transporte">Transporte</option>
+    <option value="Moradia">Moradia</option>
+    <option value="Lazer">Lazer</option>
+    <option value="Saúde">Saúde</option>
+    <option value="Educação">Educação</option>
+    <option value="Outros">Outros</option>
+  </select>
   <button onclick="adicionarGasto()">Adicionar</button>
   
   <h3>Total: R$ <span id="total">0.00</span></h3>
   
   <table id="tabela">
     <thead>
-      <tr><th>Descrição</th><th>Valor</th><th>Ação</th></tr>
+      <tr>
+        <th>Descrição</th>
+        <th>Valor</th>
+        <th>Categoria</th>
+        <th>Ação</th>
+      </tr>
     </thead>
     <tbody id="lista"></tbody>
   </table>
@@ -40,6 +112,7 @@
           <tr>
             <td>${gasto.descricao}</td>
             <td>R$ ${gasto.valor.toFixed(2)}</td>
+            <td><span class="categoria">${gasto.categoria}</span></td>
             <td><button class="delete" onclick="removerGasto(${index})">X</button></td>
           </tr>
         `;
@@ -52,9 +125,10 @@
     function adicionarGasto() {
       const descricao = document.getElementById('descricao').value.trim();
       const valor = parseFloat(document.getElementById('valor').value);
+      const categoria = document.getElementById('categoria').value;
       
       if (descricao && !isNaN(valor) && valor > 0) {
-        gastos.push({ descricao, valor });
+        gastos.push({ descricao, valor, categoria });
         document.getElementById('descricao').value = '';
         document.getElementById('valor').value = '';
         atualizarLista();
